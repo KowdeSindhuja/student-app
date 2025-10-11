@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="content">
+    <h2>Welcome!</h2>
+    <p>This app demonstrates CI/CD deployment of a Flask app using Docker, Kubernetes and Jenkins.</p>
+    <p>Go to <a href="{{ url_for('list_students') }}">Students</a> to view and add student records.</p>
+  </div>
+{% endblock %}

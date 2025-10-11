@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="content">
+    <h2>Students</h2>
+    <table class="table is-striped is-fullwidth">
+      <thead><tr><th>ID</th><th>Name</th><th>Branch</th><th>Year</th></tr></thead>
+      <tbody>
+        {% for s in students %}
+        <tr><td>{{ s.id }}</td><td>{{ s.name }}</td><td>{{ s.branch }}</td><td>{{ s.year }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3>Add Student</h3>
+    <form action="{{ url_for('add_student') }}" method="post">
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control"><input class="input" name="name" required></div>
+      </div>
+      <div class="field">
+        <label class="label">Branch</label>
+        <div class="control"><input class="input" name="branch"></div>
+      </div>
+      <div class="field">
+        <label class="label">Year</label>
+        <div class="control"><input class="input" name="year"></div>
+      </div>
+      <div class="control"><button class="button is-primary" type="submit">Add</button></div>
+    </form>
+  </div>
+{% endblock %}

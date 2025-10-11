@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-app-deployment
+  labels:
+    app: student-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: student-app
+  template:
+    metadata:
+      labels:
+        app: student-app
+    spec:
+      containers:
+      - name: student-app
+        image: YOUR_DOCKERHUB_USERNAME/student-app:latest   # Jenkins will replace tag
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_ENV
+          value: production

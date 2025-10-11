@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Student Records</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <h1 class="title">Student Record Management</h1>
+    <nav class="navbar">
+      <div class="navbar-menu">
+        <a class="navbar-item" href="{{ url_for('index') }}">Home</a>
+        <a class="navbar-item" href="{{ url_for('list_students') }}">Students</a>
+      </div>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+  </div>
+</section>
+</body>
+</html>
