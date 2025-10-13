@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: student-app
-        image: YOUR_DOCKERHUB_USERNAME/student-app:latest   # Jenkins will replace tag
+        image: kowdesindhuja/student-app:latest   # Jenkins will replace tag
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
