@@ -1,63 +1,29 @@
 pipeline {
-  agent any
-
-  environment {
-    DOCKERHUB_REPO = "YOUR_DOCKERHUB_USERNAME/student-app"
-    IMAGE_TAG = "${env.BUILD_NUMBER}"  // or use git commit: sh 'git rev-parse --short HEAD'
-  }
-
+  agent any 
   stages {
-    stage('Checkout') {
+    stage("Build Docker Image") {
       steps {
-        checkout scm
-        script {
-          // Get short commit hash
-          shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-          env.IMAGE_TAG = "${shortCommit}"
-        }
+        echo "Build Docker Image"
+        bat "docker build -t student-app:latest ."
       }
     }
-
-    stage('Build Docker Image') {
+    stage("Docker login") {
       steps {
-        script {
-          sh "docker build -t ${DOCKERHUB_REPO}:${IMAGE_TAG} ."
-          sh "docker tag ${DOCKERHUB_REPO}:${IMAGE_TAG} ${DOCKERHUB_REPO}:latest"
-        }
+        bat "docker login -u kowdesindhuja -p 123456789"
       }
     }
-
-    stage('Push to Docker Hub') {
+    stage("push Docker image to docker hub") {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-          sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-          sh "docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}"
-          sh "docker push ${DOCKERHUB_REPO}:latest"
-        }
+        echo "push Docker image to docker hub"
+        bat "docker tag student-app:latest kowdesindhuja/student-app:latest"
+        bat "docker push kowdesindhuja/student-app:latest"
       }
     }
-
-    stage('Deploy to Kubernetes') {
+    stage("Deploy to kubernetes") {
       steps {
-        // Use kubeconfig file stored in Jenkins credentials (as "kubeconfig")
-        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-          // Update deployment image to new tag and apply
-          sh """
-            export KUBECONFIG=$KUBECONFIG_FILE
-            kubectl set image deployment/student-app-deployment student-app=${DOCKERHUB_REPO}:${IMAGE_TAG} --record || true
-            kubectl apply -f k8s/service.yaml
-          """
-        }
+        bat "kubectl apply -f deployment.yaml --validate=false"
+        bat "kubectl apply -f service.yaml"
       }
-    }
-  }
-
-  post {
-    success {
-      echo "Deployment successful: ${DOCKERHUB_REPO}:${IMAGE_TAG}"
-    }
-    failure {
-      echo "Pipeline failed."
     }
   }
 }
