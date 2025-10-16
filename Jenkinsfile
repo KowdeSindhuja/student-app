@@ -15,6 +15,7 @@ pipeline {
     stage("push Docker image to docker hub") {
       steps {
         echo "push Docker image to docker hub"
+        bat "docker rmi -f kowdesindhuja/student-app:latest || echo Image not found, skipping"
         bat "docker tag student-app:latest kowdesindhuja/student-app:latest"
         bat "docker push kowdesindhuja/student-app:latest"
       }
