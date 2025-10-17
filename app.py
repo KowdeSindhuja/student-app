@@ -4,7 +4,8 @@ app = Flask(__name__)
 # In-memory store for demo (replace with DB for production)
 students = [
     {"id": 1, "name": "Alice", "branch": "CSE", "year": "3"},
-    {"id": 2, "name": "Bob", "branch": "IT", "year": "2"}
+    {"id": 2, "name": "Bob", "branch": "IT", "year": "2"},
+    {"id": 3, "name": "Sindhuja", "branch": "IT", "year": "4"}
 ]
 
 @app.route('/')
