@@ -3,7 +3,7 @@
   <div class="content">
     <h2>Students</h2>
     <table class="table is-striped is-fullwidth">
-      <thead><tr><th>ID</th><th>Name</th><th>Branch</th><th>Year</th></tr></thead>
+      <thead><tr><th>ID</th><th>Full Name</th><th>Branch</th><th>Year of studying</th></tr></thead>
       <tbody>
         {% for s in students %}
         <tr><td>{{ s.id }}</td><td>{{ s.name }}</td><td>{{ s.branch }}</td><td>{{ s.year }}</td></tr>
